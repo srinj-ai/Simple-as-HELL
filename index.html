@@ -4,67 +4,85 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Time Window</title>
+
+    <!-- Tailwind CSS CDN for minimal utility styling -->
     <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Custom Web Fonts: Newsreader (editorial serif) & Plus Jakarta Sans (clean modern sans-serif) -->
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&family=Plus+Jakarta+Sans:wght@300;400;500&display=swap');
-        body { font-family: 'Plus Jakarta Sans', sans-serif; }
-        .serif-text { font-family: 'Newsreader', serif; }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+
+        .serif-text {
+            font-family: 'Newsreader', serif;
+        }
     </style>
 </head>
 <body class="h-full bg-[#fbf9f5] text-[#2c2926] flex items-center justify-center p-6 selection:bg-[#d8c5b2] selection:text-[#2c2926]">
 
+    <!-- Main Container: Centered minimal card layout -->
     <main class="w-full max-w-sm text-center flex flex-col items-center">
         
-        <!-- Subtle Date Badge -->
+        <!-- Subtle Date Badge: Displays current day and date in calm uppercase typography -->
         <div id="date-badge" class="text-xs font-medium tracking-widest uppercase text-[#8c8278] mb-4">
             Loading...
         </div>
 
-        <!-- The Living Time Display -->
+        <!-- The Living Time Display: Large, elegant serif clock presentation -->
         <h1 id="time-display" class="serif-text text-5xl sm:text-6xl font-normal text-[#423c37] tracking-tight mb-6">
             --:--
         </h1>
 
-        <!-- Poetic Phase of Day Reflection -->
+        <!-- Poetic Phase of Day Reflection: Contextual dynamic note reflecting the present moment -->
         <div class="w-full border-t border-[#e8e2d8] pt-6 px-2">
             <p id="time-phrase" class="serif-text text-lg sm:text-xl italic text-[#6e645c] leading-relaxed">
                 Finding the current moment...
             </p>
         </div>
 
-        <!-- Minimal footer note -->
+        <!-- Minimal Footer: Gentle reminder -->
         <footer class="mt-12 text-[11px] text-[#a3988e] tracking-wide">
             A quiet space to catch your breath.
         </footer>
 
     </main>
 
+    <!-- App Logic: Time updates and thoughtful greeting prompts -->
     <script>
+        // DOM element references
         const dateBadge = document.getElementById('date-badge');
         const timeDisplay = document.getElementById('time-display');
         const timePhrase = document.getElementById('time-phrase');
 
+        /**
+         * Core function to calculate the current time, format date strings,
+         * and set an encouraging reflection phrase based on the hour of the day.
+         */
         function updateTimeWindow() {
             const now = new Date();
             
-            // Format Date
+            // Format current Date (e.g. "Thursday, October 1")
             const options = { weekday: 'long', month: 'long', day: 'numeric' };
             dateBadge.innerText = now.toLocaleDateString('en-US', options);
 
-            // Format Time (12-hour clean format without harsh seconds ticking)
+            // Format Time (12-hour clean format without distracting seconds counter)
             let hours = now.getHours();
             const minutes = now.getMinutes();
             const ampm = hours >= 12 ? 'pm' : 'am';
             hours = hours % 12;
-            hours = hours ? hours : 12; // the hour '0' should be '12'
+            hours = hours ? hours : 12; // Convert 0 (midnight) to 12
             const minutesFormatted = minutes < 10 ? '0' + minutes : minutes;
             
             timeDisplay.innerText = `${hours}:${minutesFormatted} ${ampm}`;
 
-            // Determine human-like phase reflection
+            // Calculate precise fractional hours to map smoothly into phase reflections
             const totalHours = now.getHours() + now.getMinutes() / 60;
             let phrase = "";
 
+            // Thoughtful reflections for each phase of the day
             if (totalHours >= 4 && totalHours < 7) {
                 phrase = "The earliest quiet hours. The world is still wrapped in sleep.";
             } else if (totalHours >= 7 && totalHours < 11) {
@@ -79,12 +97,13 @@
                 phrase = "The deep night. Rest is calling, let everything else wait until tomorrow.";
             }
 
+            // Only update DOM if phrase changed to avoid unnecessary reflows
             if (timePhrase.innerText !== phrase) {
                 timePhrase.innerText = phrase;
             }
         }
 
-        // Run immediately and update every 15 seconds
+        // Initialize clock immediately and set interval tick every 15 seconds
         updateTimeWindow();
         setInterval(updateTimeWindow, 15000);
     </script>
