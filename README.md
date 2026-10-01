@@ -19,7 +19,20 @@ A minimal, ambient web application that offers a quiet space to catch your breat
 
 ---
 
-## 🚀 Getting Started
+## 🌐 Live Demo & GitHub Pages Deployment
+
+This repository is optimized for hosting directly on **GitHub Pages**.
+
+### How to Enable GitHub Pages:
+1. Go to your repository on **GitHub**.
+2. Navigate to **Settings** > **Pages**.
+3. Under **Build and deployment** > **Source**, select `Deploy from a branch`.
+4. Choose the `main` branch and `/ (root)` folder, then click **Save**.
+5. Your site will be published at `https://<your-username>.github.io/<repository-name>/`.
+
+---
+
+## 🚀 Local Setup
 
 Since Time Window is built with standard web technologies, no installation or package setup is required.
 
